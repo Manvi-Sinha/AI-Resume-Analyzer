@@ -1,103 +1,88 @@
-Skill
-Python
-Java
-C
-C++
-C#
-JavaScript
-TypeScript
-HTML
-CSS
-Bootstrap
-Tailwind CSS
-React
-Next.js
-Redux
-Node.js
-Express.js
-Angular
-Vue.js
-MongoDB
-SQL
-MySQL
-PostgreSQL
-SQLite
-Oracle
-Firebase
-Git
-GitHub
-GitLab
-Machine Learning
-Deep Learning
-Artificial Intelligence
-Natural Language Processing
-NLP
-Computer Vision
-Data Analysis
-Data Science
-Pandas
-NumPy
-Matplotlib
-Seaborn
-Scikit-learn
-TensorFlow
-Keras
-PyTorch
-OpenCV
-Flask
-Django
-FastAPI
-REST API
-GraphQL
-Linux
-Docker
-Kubernetes
-AWS
-Azure
-Google Cloud
-Power BI
-Excel
-Tableau
-Apache Spark
-Hadoop
-Jupyter Notebook
-Google Colab
-VS Code
-Postman
-JWT
-OAuth
-Socket.io
-Redis
-RabbitMQ
-CI/CD
-Jenkins
-DSA
-Data Structures
-Algorithms
-Object Oriented Programming
-OOP
-Operating System
-DBMS
-Computer Networks
-CN
-Software Engineering
-Agile
-Scrum
-Problem Solving
-Critical Thinking
-Analytical Thinking
-Communication
-Leadership
-Teamwork
-Time Management
-Presentation Skills
-Debugging
-Testing
-Unit Testing
-Selenium
-PyTest
-JUnit
-API Development
-Responsive Design
-JSON
-XML
+Category,Skill
+Programming Language,Python
+Programming Language,Java
+Programming Language,C
+Programming Language,C++
+Programming Language,C#
+Programming Language,JavaScript
+Programming Language,TypeScript
+Frontend,HTML
+Frontend,CSS
+Frontend,Bootstrap
+Frontend,Tailwind CSS
+Frontend,React
+Frontend,Next.js
+Frontend,Redux
+Frontend,Angular
+Frontend,Vue.js
+Backend,Node.js
+Backend,Express.js
+Backend,Flask
+Backend,Django
+Backend,FastAPI
+Backend,REST API
+Backend,GraphQL
+Database,MongoDB
+Database,MySQL
+Database,PostgreSQL
+Database,SQLite
+Database,Oracle
+Database,Firebase
+AI/ML,Machine Learning
+AI/ML,Deep Learning
+AI/ML,Artificial Intelligence
+AI/ML,NLP
+AI/ML,Natural Language Processing
+AI/ML,Computer Vision
+AI/ML,Data Science
+AI/ML,Data Analysis
+AI/ML,Pandas
+AI/ML,NumPy
+AI/ML,Matplotlib
+AI/ML,Seaborn
+AI/ML,Scikit-learn
+AI/ML,TensorFlow
+AI/ML,Keras
+AI/ML,PyTorch
+AI/ML,OpenCV
+Cloud & DevOps,Docker
+Cloud & DevOps,Kubernetes
+Cloud & DevOps,AWS
+Cloud & DevOps,Azure
+Cloud & DevOps,Google Cloud
+Cloud & DevOps,Jenkins
+Cloud & DevOps,CI/CD
+Cloud & DevOps,Linux
+Tools,Git
+Tools,GitHub
+Tools,GitLab
+Tools,Postman
+Tools,Jupyter Notebook
+Tools,Google Colab
+Tools,VS Code
+Tools,Excel
+Tools,Power BI
+Tools,Tableau
+Computer Science,DSA
+Computer Science,Data Structures
+Computer Science,Algorithms
+Computer Science,OOP
+Computer Science,Object Oriented Programming
+Computer Science,Operating System
+Computer Science,DBMS
+Computer Science,Computer Networks
+Computer Science,Software Engineering
+Soft Skills,Problem Solving
+Soft Skills,Critical Thinking
+Soft Skills,Analytical Thinking
+Soft Skills,Communication
+Soft Skills,Leadership
+Soft Skills,Teamwork
+Soft Skills,Time Management
+Soft Skills,Presentation Skills
+Soft Skills,Debugging
+Soft Skills,Testing
+Soft Skills,Unit Testing
+Soft Skills,Selenium
+Soft Skills,PyTest
+Soft Skills,JUnit

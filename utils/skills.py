@@ -2,25 +2,37 @@ import pandas as pd
 import re
 
 
+def normalize(text):
+    text = text.lower()
+    text = text.replace(".", " ")
+    text = text.replace("-", " ")
+    text = re.sub(r"\s+", " ", text)
+    return text.strip()
+
+
 def extract_skills(processed_text):
 
     skills_df = pd.read_csv("data/skills.csv")
 
-    skill_list = skills_df["Skill"].dropna().tolist()
+    processed_text = normalize(processed_text)
 
-    words = set(re.findall(r"\b[\w+.#-]+\b", processed_text.lower()))
+    detected = {}
 
-    detected_skills = []
+    for _, row in skills_df.iterrows():
 
-    for skill in skill_list:
+        category = row["Category"].strip()
+        skill = row["Skill"].strip()
 
-        skill = skill.lower().strip()
+        skill_normalized = normalize(skill)
 
-        if " " in skill:
-            if skill in processed_text.lower():
-                detected_skills.append(skill.title())
-        else:
-            if skill in words:
-                detected_skills.append(skill.title())
+        if skill_normalized in processed_text:
 
-    return sorted(list(set(detected_skills)))
+            if category not in detected:
+                detected[category] = []
+
+            detected[category].append(skill)
+
+    for category in detected:
+        detected[category] = sorted(list(set(detected[category])))
+
+    return detected
