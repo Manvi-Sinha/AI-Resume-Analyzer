@@ -54,10 +54,13 @@ if uploaded_file:
         detected_skills.extend(skills)
 
     # ATS Score
-    ats_score = calculate_ats_score(
+    ats_result = calculate_ats_score(
         resume_text,
         detected_skills
     )
+
+    ats_score = ats_result["total_score"]
+    ats_breakdown = ats_result["breakdown"]
 
     # Default Values
     similarity_score = 0
@@ -65,9 +68,9 @@ if uploaded_file:
     matched_skills = []
     missing_skills = []
 
-    # ----------------------------------------------
+    # --------------------------------------------------
     # Compare Resume with Job Description
-    # ----------------------------------------------
+    # --------------------------------------------------
 
     if job_description.strip():
 
@@ -92,49 +95,57 @@ if uploaded_file:
     st.divider()
 
     # --------------------------------------------------
-    # METRICS
+    # DASHBOARD
     # --------------------------------------------------
 
     col1, col2, col3, col4 = st.columns(4)
 
     with col1:
-        st.metric(
-            "ATS Score",
-            f"{ats_score}/100"
-        )
+        st.metric("ATS Score", f"{ats_score}/100")
 
     with col2:
-        st.metric(
-            "Skill Match",
-            f"{skill_match}%"
-        )
+        st.metric("Skill Match", f"{skill_match}%")
 
     with col3:
-        st.metric(
-            "Text Similarity",
-            f"{similarity_score}%"
-        )
+        st.metric("Text Similarity", f"{similarity_score}%")
 
     with col4:
-        st.metric(
-            "Skills Found",
-            len(detected_skills)
-        )
+        st.metric("Skills Found", len(detected_skills))
 
     st.progress(ats_score / 100)
 
-    # --------------------------------------------------
-    # RESUME QUALITY
-    # --------------------------------------------------
-
     if ats_score >= 80:
         st.success("🌟 Excellent Resume")
-
     elif ats_score >= 60:
         st.info("👍 Good Resume")
-
     else:
         st.warning("⚠️ Resume Needs Improvement")
+
+    st.divider()
+
+    # --------------------------------------------------
+    # ATS BREAKDOWN
+    # --------------------------------------------------
+
+    st.subheader("📊 ATS Breakdown")
+
+    max_scores = {
+        "Resume Length": 15,
+        "Skills": 35,
+        "Education": 15,
+        "Projects": 15,
+        "GitHub": 5,
+        "LinkedIn": 5,
+        "Experience": 10
+    }
+
+    for section, score in ats_breakdown.items():
+
+        maximum = max_scores[section]
+
+        st.write(f"**{section}** : {score}/{maximum}")
+
+        st.progress(score / maximum)
 
     st.divider()
 
@@ -189,7 +200,42 @@ if uploaded_file:
                 st.error(skill)
 
         else:
-            st.success("No missing skills!")
+            st.success("No missing skills found.")
+
+    # --------------------------------------------------
+    # RESUME IMPROVEMENT SUGGESTIONS
+    # --------------------------------------------------
+
+    st.divider()
+
+    st.subheader("💡 Resume Suggestions")
+
+    suggestions = []
+
+    if ats_breakdown["Resume Length"] < 15:
+        suggestions.append("Increase your resume content. Aim for a well-structured one-page resume.")
+
+    if ats_breakdown["Skills"] < 25:
+        suggestions.append("Add more relevant technical skills related to your target job.")
+
+    if ats_breakdown["Projects"] == 0:
+        suggestions.append("Include at least 2-3 projects with measurable outcomes.")
+
+    if ats_breakdown["Experience"] == 0:
+        suggestions.append("Add internship, freelance, or relevant experience if available.")
+
+    if ats_breakdown["GitHub"] == 0:
+        suggestions.append("Include your GitHub profile link.")
+
+    if ats_breakdown["LinkedIn"] == 0:
+        suggestions.append("Include your LinkedIn profile link.")
+
+    if not suggestions:
+        st.success("🎉 Great job! Your resume already covers all major ATS parameters.")
+
+    else:
+        for suggestion in suggestions:
+            st.info(suggestion)
 
     # --------------------------------------------------
     # RESUME PREVIEW
@@ -198,11 +244,9 @@ if uploaded_file:
     st.divider()
 
     with st.expander("📄 Extracted Resume Text"):
-
         st.write(resume_text)
 
     with st.expander("🧹 Processed Resume Text"):
-
         st.write(processed_resume)
 
 else:

@@ -1,25 +1,36 @@
 def calculate_ats_score(resume_text, detected_skills):
 
-    score = 0
-
     text = resume_text.lower()
 
-    # -------------------------
-    # Resume Length
-    # -------------------------
-    if len(resume_text) >= 1500:
-        score += 15
+    breakdown = {}
+
+    total_score = 0
 
     # -------------------------
-    # Skills
+    # Resume Length (15)
     # -------------------------
+
+    if len(resume_text) >= 1500:
+        breakdown["Resume Length"] = 15
+    else:
+        breakdown["Resume Length"] = 8
+
+    total_score += breakdown["Resume Length"]
+
+    # -------------------------
+    # Skills (35)
+    # -------------------------
+
     skill_score = min(len(detected_skills), 20)
 
-    score += int((skill_score / 20) * 35)
+    breakdown["Skills"] = int((skill_score / 20) * 35)
+
+    total_score += breakdown["Skills"]
 
     # -------------------------
-    # Education
+    # Education (15)
     # -------------------------
+
     education_keywords = [
         "b.tech",
         "btech",
@@ -30,29 +41,49 @@ def calculate_ats_score(resume_text, detected_skills):
     ]
 
     if any(word in text for word in education_keywords):
-        score += 15
+        breakdown["Education"] = 15
+    else:
+        breakdown["Education"] = 0
+
+    total_score += breakdown["Education"]
 
     # -------------------------
-    # Projects
+    # Projects (15)
     # -------------------------
+
     if "project" in text:
-        score += 15
+        breakdown["Projects"] = 15
+    else:
+        breakdown["Projects"] = 0
+
+    total_score += breakdown["Projects"]
 
     # -------------------------
-    # GitHub
+    # GitHub (5)
     # -------------------------
+
     if "github" in text:
-        score += 5
+        breakdown["GitHub"] = 5
+    else:
+        breakdown["GitHub"] = 0
+
+    total_score += breakdown["GitHub"]
 
     # -------------------------
-    # LinkedIn
+    # LinkedIn (5)
     # -------------------------
+
     if "linkedin" in text:
-        score += 5
+        breakdown["LinkedIn"] = 5
+    else:
+        breakdown["LinkedIn"] = 0
+
+    total_score += breakdown["LinkedIn"]
 
     # -------------------------
-    # Experience / Internship
+    # Experience (10)
     # -------------------------
+
     experience_keywords = [
         "intern",
         "internship",
@@ -60,6 +91,13 @@ def calculate_ats_score(resume_text, detected_skills):
     ]
 
     if any(word in text for word in experience_keywords):
-        score += 10
+        breakdown["Experience"] = 10
+    else:
+        breakdown["Experience"] = 0
 
-    return score
+    total_score += breakdown["Experience"]
+
+    return {
+        "total_score": total_score,
+        "breakdown": breakdown
+    }
