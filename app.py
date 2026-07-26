@@ -1,66 +1,97 @@
 import streamlit as st
+
 from utils.pdf_extractor import extract_text_from_pdf
 from utils.preprocess import preprocess_text
+from utils.skills import extract_skills
+from utils.ats_score import calculate_ats_score
 
-# -----------------------------------
-# Page Configuration
-# -----------------------------------
+# ----------------------------------
+# PAGE CONFIG
+# ----------------------------------
+
 st.set_page_config(
     page_title="AI Resume Analyzer",
     page_icon="📄",
     layout="wide"
 )
 
-# -----------------------------------
-# Header
-# -----------------------------------
+# ----------------------------------
+# HEADER
+# ----------------------------------
+
 st.title("📄 AI Resume Analyzer")
 st.caption("Upload your resume and get AI-powered insights.")
 
 st.divider()
 
-# -----------------------------------
-# Upload Resume
-# -----------------------------------
 uploaded_file = st.file_uploader(
-    "Choose your Resume (PDF)",
+    "Upload Resume",
     type=["pdf"]
 )
 
-# -----------------------------------
-# Process Resume
-# -----------------------------------
+# ----------------------------------
+# PROCESS
+# ----------------------------------
+
 if uploaded_file:
 
     resume_text = extract_text_from_pdf(uploaded_file)
 
     processed_text = preprocess_text(resume_text)
 
-    col1, col2 = st.columns(2)
+    detected_skills = extract_skills(processed_text)
 
-    with col1:
-        st.success("✅ Resume Uploaded Successfully")
-        st.write(f"**File Name:** {uploaded_file.name}")
+    ats_score = calculate_ats_score(
+        resume_text,
+        detected_skills
+    )
 
-    with col2:
-        st.info(f"📄 Characters Extracted: {len(resume_text)}")
+    st.success("✅ Resume Uploaded Successfully")
+
+    st.subheader("📊 Resume Analysis")
+
+    c1, c2, c3, c4 = st.columns(4)
+
+    c1.metric("ATS Score", f"{ats_score}/100")
+
+    c2.metric(
+        "Skills",
+        len(detected_skills)
+    )
+
+    c3.metric(
+        "Words",
+        len(processed_text.split())
+    )
+
+    c4.metric(
+        "Characters",
+        len(resume_text)
+    )
+
+    st.progress(ats_score / 100)
+
+    if ats_score >= 80:
+        st.success("Excellent Resume ⭐")
+
+    elif ats_score >= 60:
+        st.info("Good Resume 👍")
+
+    else:
+        st.warning("Resume Needs Improvement")
 
     st.divider()
 
-    # Original Resume
-    st.subheader("📃 Extracted Resume Text")
+    st.subheader("🛠 Detected Skills")
 
-    st.text_area(
-        label="Original Resume",
-        value=resume_text,
-        height=300
-    )
+    cols = st.columns(4)
 
-    # Processed Resume
-    st.subheader("🧹 Processed Resume Text")
+    for i, skill in enumerate(detected_skills):
 
-    st.text_area(
-        label="Processed Resume",
-        value=processed_text,
-        height=300
-    )
+        cols[i % 4].success(skill)
+
+    st.divider()
+
+    st.expander("📄 Extracted Resume Text").text(resume_text)
+
+    st.expander("🧹 Processed Resume Text").text(processed_text)
