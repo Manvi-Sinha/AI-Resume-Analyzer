@@ -1,17 +1,26 @@
 import pandas as pd
+import re
 
 
 def extract_skills(processed_text):
 
     skills_df = pd.read_csv("data/skills.csv")
 
-    skills_list = skills_df.iloc[:, 0].tolist()
+    skill_list = skills_df["Skill"].dropna().tolist()
 
-    found_skills = []
+    words = set(re.findall(r"\b[\w+.#-]+\b", processed_text.lower()))
 
-    for skill in skills_list:
+    detected_skills = []
 
-        if skill.lower() in processed_text.lower():
-            found_skills.append(skill)
+    for skill in skill_list:
 
-    return sorted(list(set(found_skills)))
+        skill = skill.lower().strip()
+
+        if " " in skill:
+            if skill in processed_text.lower():
+                detected_skills.append(skill.title())
+        else:
+            if skill in words:
+                detected_skills.append(skill.title())
+
+    return sorted(list(set(detected_skills)))
